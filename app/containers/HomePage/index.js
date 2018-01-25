@@ -10,51 +10,87 @@
  */
 
 import React from 'react';
-
+import Category from 'containers/Category/index';
 
 export default class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function//
-    constructor(props) {
-      super(props);
-      this.state = { tasksTotal: 3,
-          tasksSolved: 1,
-          categories: [ {id:"preMortem",
-              name:"Pre Mortem",
-                            subCategories: [],
-                            tasks:[{id:"to_born",
-                                    name:"To born",
-                                    isFinished: true,
-                                    description:"first you must born to die"},
-                                    {id:"to_Live",
-                                    isFinished: false,
-                                    description:"then you must live to die"},]},
-              {id:"Mortem",
-                  name:"Mortem",
-                  subCategories: [],
-                  tasks:[{id:"to_born",
-                      name:"To born",
-                      isFinished: true,
-                      description:"first you must born to die"},
-                      {id:"to_Live",
-                          isFinished: false,
-                          description:"then you must live to die"},]},},
-              {id:"postMortem",
-                  name:"Post Mortem",
-                  subCategories: [],
-        tasks:[{id:"to_born",
-            name:"To born",
+  constructor(props) {
+    super(props);
+    this.state = {
+      tasksTotal: 3,
+      tasksSolved: 1,
+      categories: [{
+        id: "preMortem",
+        name: "Pre Mortem",
+        subCategories: [{
+          id: "IntoPreMortem",
+          name: "Inside Pre Mortem",
+          subCategories: [],
+          tasks: []
+        }, {
+          id: "IntoPreMortem2",
+          name: "Inside Pre Mortem 2",
+          subCategories: [],
+          tasks: []
+        }],
+        tasks: [{
+          id: "to_born",
+          name: "To born",
+          isFinished: true,
+          description: "first you must born to die"
+        }, {
+          id: "to_live",
+          isFinished: false,
+          description: "then you must live to die"
+        }
+        ]
+      },
+        {
+          id: "Mortem",
+          name: "Mortem",
+          subCategories: [],
+          tasks: [{
+            id: "to_born",
+            name: "To born",
             isFinished: true,
-            description:"first you must born to die"},
-            {id:"to_Live",
-                isFinished: false,
-                description:"then you must live to die"},]},]
-      };
-    }
+            description: "first you must born to die"
+          }, {
+            id: "to_Live",
+            isFinished: false,
+            description: "then you must live to die"
+          }
+          ]
+        },
+        {
+          id: "postMortem",
+          name: "Post Mortem",
+          subCategories: [],
+          tasks: [{
+            id: "to_born",
+            name: "To born",
+            isFinished: true,
+            description: "first you must born to die"
+          },
+            {
+              id: "to_Live",
+              isFinished: false,
+              description: "then you must live to die"
+            }
+          ]
+        }
+      ]
+    };
+  }
 
   render() {
     return (
-      <h1>
-        This is homepage
-      </h1>
+      <div>
+        <h1>
+          This is homepage
+        </h1>
+        {this.state.categories.map((category) => {
+          return (<Category {...category} key={category.id}/>);
+        })};
+      </div>
     );
   }
 }
