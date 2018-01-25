@@ -25,7 +25,7 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
           id: "IntoPreMortem",
           name: "Inside Pre Mortem",
           subCategories: [],
-          tasks: []
+          tasks: [],
         }, {
           id: "IntoPreMortem2",
           name: "Inside Pre Mortem 2",
@@ -39,6 +39,7 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
           description: "first you must born to die"
         }, {
           id: "to_live",
+            name:"To live",
           isFinished: false,
           description: "then you must live to die"
         }
