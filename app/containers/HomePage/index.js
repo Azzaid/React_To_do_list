@@ -11,10 +11,15 @@
 
 import React from 'react';
 import Category from 'containers/Category/index';
+import TextInputDialog from 'containers/TextInputDialog/index';
+import {List, ListItem} from 'material-ui/List';
 
-export default class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function//
+export default class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function//
   constructor(props) {
     super(props);
+
+    this.addCategory = this.addCategory.bind(this);
+
     this.state = {
       tasksTotal: 3,
       tasksSolved: 1,
@@ -82,11 +87,22 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
     };
   }
 
-  addCategory() {
-    () => return();
-    const categories = this.state.categories;
-    categories.push()
+  makeCategoryFromName(newCategoryName) {
+      return(
+          {
+              id: encodeURI(newCategoryName),
+              name: newCategoryName,
+              subCategories: [],
+              tasks: [],
+          }
+      );
+  }
 
+  addCategory(newCategoryName) {
+      this.updatedState = this.state;
+      this.updatedState.categories.push(this.makeCategoryFromName(newCategoryName));
+      this.setState(this.updatedState);
+      console.log(this.state);
   }
 
   deleteCategory
@@ -110,9 +126,11 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
         <h1>
           This is homepage
         </h1>
-        {this.state.categories.map((category) => {
-          return (<Category {...category} key={category.id} />);
-        })};
+          <TextInputDialog buttonLabel="Add category" onSubmitFunction={this.addCategory} dialogLable="Enter new name" />
+          <List>
+              {this.state.categories.map((category) => {
+                  return (<Category {...category} key={category.id} />);})};
+          </List>
       </div>
     );
   }

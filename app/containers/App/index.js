@@ -13,17 +13,20 @@
 
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 export default function App() {
   return (
-    <div>
+      <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
       <Switch>
         <Route path="/" component={HomePage} />
         <Route component={NotFoundPage} />
       </Switch>
-    </div>
+      </MuiThemeProvider>
   );
 }

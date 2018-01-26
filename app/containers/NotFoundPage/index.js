@@ -19,6 +19,7 @@ export default class NotFound extends React.PureComponent { // eslint-disable-li
     return (
       <h1>
         <FormattedMessage {...messages.header} />
+        <p>'really not found it'</p>
       </h1>
     );
   }
