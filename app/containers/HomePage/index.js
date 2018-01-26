@@ -82,6 +82,28 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
     };
   }
 
+  addCategory() {
+    () => return();
+    const categories = this.state.categories;
+    categories.push()
+
+  }
+
+  deleteCategory
+
+  editCategory
+
+  addTask() {
+}
+
+  deleteTask
+
+  markTaskAsDone
+
+  moveTask
+
+  editTask
+
   render() {
     return (
       <div>
@@ -89,7 +111,7 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
           This is homepage
         </h1>
         {this.state.categories.map((category) => {
-          return (<Category {...category} key={category.id}/>);
+          return (<Category {...category} key={category.id} />);
         })};
       </div>
     );

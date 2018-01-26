@@ -1,0 +1,40 @@
+{
+  categories: [
+               { id: "Main1",
+                 name: "Main 1",
+                 subCategories: [
+                                 {
+                                   id: "Main1Sub1",
+                                   name: "subCat 1 of mainCat 1",
+                                   subCategories: [],
+                                   tasks: [
+                                            {
+                                              id:"Main1Sub1Task1",
+                                              name:"Task 1 of subCat 1 of MainCat 1"
+                                            }
+                                          ]
+                                 },
+                                 {
+                                   id: "Main1Sub2",
+                                   name: "subCat 2 of mainCat 1",
+                                   subCategories: [],
+                                   tasks: []
+                                 }
+                                ],
+                 tasks: []
+               },
+               {
+                 id: "Main 2",
+                 name: "Mortem",
+                 subCategories: [],
+                 tasks: []
+               },
+             ]
+  }
+
+
+import {browserHistory} from "react-router";
+
+functionName() {
+browserHistory.push("/path-to-link");
+}

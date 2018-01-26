@@ -15,7 +15,7 @@ export default class Task extends React.Component {
             <div>
                 <input type="checkbox"/>
                 <p>{this.props.name}</p>
-                <input type="button"/>
+                <input type="button" />
             </div>
         );
     }

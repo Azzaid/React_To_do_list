@@ -10,41 +10,39 @@ export default class Category extends React.Component {
         super(props);
     };
 
+  showSubCategories(subCategories) {
+    if (subCategories.length !== 0) {
+      return (
+        subCategories.map((category) => {
+          return (<Category {...category} key={category.id}/>);
+        })
+      );
+    }
+  }
+
+  showTasks (tasks) {
+    if (tasks.length !== 0) {
+      return (
+        <div>
+          {tasks.map((task) => {
+            return (<Task {...task} key={task.id} />);
+          })}
+        </div>
+      );
+    }
+  }
 
     render() {
-
-        const ShowSubCategories = () => {
-            if (this.props.subCategories.length !== 0) {
-                return (
-                    this.props.subCategories.map((category) => {
-                        return (<Category {...category} key={category.id}/>);
-                    })
-                )
-            }
-        };
-
-        const ShowTasks = () => {
-            if (this.props.tasks.length !== 0) {
-                return (
-                    <div>
-                        {this.props.tasks.map((task) => {
-                        return (<Task {...task} key={task.id} />);
-                    })}
-                    </div>
-                )
-            }
-        };
-
         return (
             <div>
                 <div>
                     <Link to={'/' + this.props.id}>
                         {this.props.name};
                     </Link>
-                    {ShowSubCategories(this.props.subCategories)}
+                    {this.showSubCategories(this.props.subCategories)}
                 </div>
                 <div>
-                    <Route exact path={'/' + this.props.id} component={ShowTasks} />
+                    <Route exact path={'/' + this.props.id} component={this.showTasks} />
                 </div>
             </div>
         );
