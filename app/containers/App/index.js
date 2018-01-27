@@ -22,11 +22,9 @@ import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 export default function App() {
   return (
-      <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-      <Switch>
-        <Route path="/" component={HomePage} />
-        <Route component={NotFoundPage} />
-      </Switch>
-      </MuiThemeProvider>
+    <Switch>
+      <Route path="/" component={HomePage} />
+      <Route component={NotFoundPage} />
+    </Switch>
   );
 }
