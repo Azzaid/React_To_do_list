@@ -47,7 +47,7 @@ export default class TextInputDialog extends React.Component {
 
         return (
             <div>
-                <RaisedButton label={this.props.buttonLabel} onClick={this.handleOpen} />
+                <RaisedButton label={this.props.buttonLabel} primary onClick={this.handleOpen} />
                 <Dialog
                     title={this.props.dialogLable}
                     actions={actions}

@@ -11,12 +11,13 @@ export default class Category extends React.Component {
         super(props);
     };
 
-    showSubCategories(subCategories) {
+    showSubCategories() {
+        const subCategories = this.props.subCategories;
         if (subCategories.length !== 0) {
             return (
                 <ListItem
                     primaryText={this.props.name}
-                    initiallyOpen={true}
+                    initiallyOpen
                     nestedItems={subCategories.map((subCategory) => {
                     return (<Category {...subCategory} key={subCategory.id} />);})}/>
 
@@ -25,23 +26,23 @@ export default class Category extends React.Component {
             return (
                 <ListItem
                     primaryText={this.props.name}
-                    initiallyOpen={true}/>)
+                    initiallyOpen />)
         }
     }
 
     showTasks(tasks) {
         if (tasks.length !== 0) {
             return (
+            <div style="padding-left: 10px">
                 <ListItem {...this.createListProps} />
+            </div>
             );
         }
     }
 
     render() {
         return (
-            <div>
-                {this.showSubCategories(this.props.subCategories)}
-            </div>
+                this.showSubCategories()
         )
     };
 }
