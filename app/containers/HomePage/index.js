@@ -44,7 +44,7 @@ export default class HomePage extends React.Component { // eslint-disable-line r
           description: "first you must born to die"
         }, {
           id: "to_live",
-            name:"To live",
+          name: "To live",
           isFinished: false,
           description: "then you must live to die"
         }
@@ -88,37 +88,35 @@ export default class HomePage extends React.Component { // eslint-disable-line r
   }
 
   makeCategoryFromName(newCategoryName) {
-      return(
-          {
-              id: encodeURI(newCategoryName),
-              name: newCategoryName,
-              subCategories: [],
-              tasks: [],
-          }
-      );
+    return (
+      {
+        id: encodeURI(newCategoryName),
+        name: newCategoryName,
+        subCategories: [],
+        tasks: [],
+      }
+    );
   }
 
   addCategory(newCategoryName) {
-      this.updatedState = this.state;
-      this.updatedState.categories.push(this.makeCategoryFromName(newCategoryName));
-      this.setState(this.updatedState);
-      console.log(this.state);
+    this.updatedState = this.state;
+    this.updatedState.categories.push(this.makeCategoryFromName(newCategoryName));
+    this.setState(this.updatedState);
   }
 
-  deleteCategory
+  /* deleteCategory
 
-  editCategory
+   editCategory
 
-  addTask() {
-}
+   addTask() {}*/
 
-  deleteTask
+  /*deleteTask
 
   markTaskAsDone
 
   moveTask
 
-  editTask
+  editTask*/
 
   render() {
     return (
@@ -126,11 +124,12 @@ export default class HomePage extends React.Component { // eslint-disable-line r
         <h1>
           This is homepage
         </h1>
-          <TextInputDialog buttonLabel="Add category" onSubmitFunction={this.addCategory} dialogLable="Enter new name" />
-          <List>
-              {this.state.categories.map((category) => {
-                  return (<Category {...category} key={category.id} />);})};
-          </List>
+        <TextInputDialog buttonLabel="Add category" onSubmitFunction={this.addCategory} dialogLable="Enter new name"/>
+        <List>
+          {this.state.categories.map((category) => {
+            return (<Category {...category} key={category.id} />);
+          })};
+        </List>
       </div>
     );
   }
