@@ -6,7 +6,7 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import ControlledTextField from 'containers/ControlledTextField/index';
+import TextField from 'material-ui/TextField';
 
 export default class TextInputDialog extends React.Component {
     constructor(props) {
@@ -27,8 +27,14 @@ export default class TextInputDialog extends React.Component {
     };
 
     handleSubmit = () => {
-        this.props.onSubmitFunction(this.state.textInput);
+        this.props.onSubmitFunction(this.state.textInput, this.props.targetArray);
         this.setState({open: false});
+    };
+
+    handleChange = (event) => {
+        this.setState({
+            textInput: event.target.value,
+        });
     };
 
     render() {
@@ -47,14 +53,18 @@ export default class TextInputDialog extends React.Component {
 
         return (
             <div>
-                <RaisedButton label={this.props.buttonLabel} primary onClick={this.handleOpen} />
+                <RaisedButton label={this.props.buttonLabel} primary onClick={this.handleOpen} style={{dsplay : 'inline-block'}} />
                 <Dialog
                     title={this.props.dialogLable}
                     actions={actions}
                     modal={true}
                     open={this.state.open}
                 >
-                    <ControlledTextField />
+                    <TextField
+                        id="text-field-controlled"
+                        textInput={this.state.textInput}
+                        onChange={this.handleChange}
+                    />
                 </Dialog>
             </div>
         );

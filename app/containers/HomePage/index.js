@@ -12,7 +12,7 @@
 import React from 'react';
 import Category from 'containers/Category/index';
 import TextInputDialog from 'containers/TextInputDialog/index';
-import {List, ListItem} from 'material-ui/List';
+import {List} from 'material-ui/List';
 
 export default class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function//
   constructor(props) {
@@ -26,15 +26,15 @@ export default class HomePage extends React.Component { // eslint-disable-line r
       categories: [{
         id: "preMortem",
         name: "Pre Mortem",
-        subCategories: [{
+          categories: [{
           id: "IntoPreMortem",
           name: "Inside Pre Mortem",
-          subCategories: [],
+          categories: [],
           tasks: [],
         }, {
           id: "IntoPreMortem2",
           name: "Inside Pre Mortem 2",
-          subCategories: [],
+              categories: [],
           tasks: []
         }],
         tasks: [{
@@ -53,7 +53,7 @@ export default class HomePage extends React.Component { // eslint-disable-line r
         {
           id: "Mortem",
           name: "Mortem",
-          subCategories: [],
+            categories: [],
           tasks: [{
             id: "to_born",
             name: "To born",
@@ -69,7 +69,7 @@ export default class HomePage extends React.Component { // eslint-disable-line r
         {
           id: "postMortem",
           name: "Post Mortem",
-          subCategories: [],
+            categories: [],
           tasks: [{
             id: "to_born",
             name: "To born",
@@ -92,17 +92,16 @@ export default class HomePage extends React.Component { // eslint-disable-line r
           {
               id: encodeURI(newCategoryName),
               name: newCategoryName,
-              subCategories: [],
+              categories: [],
               tasks: [],
           }
       );
   }
 
-  addCategory(newCategoryName) {
-      this.updatedState = this.state;
-      this.updatedState.categories.push(this.makeCategoryFromName(newCategoryName));
+  addCategory(newCategoryName, targetArray) {
+      console.log(targetArray);
+      targetArray.push(this.makeCategoryFromName(newCategoryName));
       this.setState(this.updatedState);
-      console.log(this.state);
   }
 
   deleteCategory
@@ -121,15 +120,13 @@ export default class HomePage extends React.Component { // eslint-disable-line r
   editTask
 
   render() {
+      this.updatedState = this.state;
     return (
       <div>
-        <h1>
-          This is homepage
-        </h1>
-          <TextInputDialog buttonLabel="Add category" onSubmitFunction={this.addCategory} dialogLable="Enter new name" />
+          <TextInputDialog buttonLabel="Add category" onSubmitFunction={this.addCategory} targetArray={this.updatedState.categories} dialogLable="Enter new name" />
           <List>
-              {this.state.categories.map((category) => {
-                  return (<Category {...category} key={category.id} />);})};
+              {this.updatedState.categories.map((category) => {
+                  return (<Category {...category} key={category.id} homeArray={this.updatedState.categories} addCategoryFunction={this.addCategory} />);})};
           </List>
       </div>
     );
