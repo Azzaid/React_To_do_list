@@ -1,19 +1,16 @@
 /**
- * Created by Johanas on 26.01.2018.
+ * Created by p.zamulko on 29.01.2018.
  */
-
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
 
 export default class TextInputDialog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             open: false,
-            textInput:'New category aded',
         };
     }
 
@@ -27,7 +24,7 @@ export default class TextInputDialog extends React.Component {
     };
 
     handleSubmit = () => {
-        this.props.onSubmitFunction(this.state.textInput, this.props.targetArray, this.props.targetId);
+        this.props.onSubmitFunction(this.props.targetId, this.props.targetArray);
         this.setState({open: false});
     };
 
@@ -60,11 +57,6 @@ export default class TextInputDialog extends React.Component {
                     modal={true}
                     open={this.state.open}
                 >
-                    <TextField
-                        id="text-field-controlled"
-                        textInput={this.state.textInput}
-                        onChange={this.handleChange}
-                    />
                 </Dialog>
             </div>
         );

@@ -5,69 +5,92 @@ import React from 'react';
 import {Switch, Route, Redirect, Link} from 'react-router-dom';
 import {List, ListItem} from 'material-ui/List';
 import TextInputDialog from 'containers/TextInputDialog/index';
+import ConfirmationDialog from 'containers/ConfirmationDialog/index';
 
 export default class Category extends React.Component {
     constructor(props) {
         super(props);
+        this.showTaskList = this.showTaskList.bind(this);
     };
 
     showSubCategories() {
         const subCategories = this.props.categories;
         if (subCategories.length !== 0) {
             return (
-                <ListItem
-                    primaryText={this.props.name}
-                    initiallyOpen
-                    nestedItems={subCategories.map((subCategory) => {
-                        return (<Category {...subCategory} key={subCategory.id} homeArray={this.props.categories} addCategoryFunction={this.props.addCategoryFunction} />);})}
-                    nestedListStyle={{marginLeft:'40px'}}>
-                    <TextInputDialog
-                        buttonLabel="Add category" onSubmitFunction={this.props.addCategoryFunction} targetArray={this.props.categories} dialogLable="Enter new name"
-                    />
-                </ListItem>
-
+                subCategories.map((subCategory) => {
+                    return (<Category {...subCategory} key={subCategory.id} homeArray={this.props.categories}
+                                      addCategoryFunction={this.props.addCategoryFunction}
+                                      deleteItemFunction={this.props.deleteItemFunction}
+                                      addTaskFunction={this.props.addTaskFunction}
+                                      editNameFunction={this.props.editNameFunction}
+                    />);
+                })
             );
         } else {
-            return (
-                <ListItem
-                    primaryText={this.props.name}
-                    initiallyOpen
-                    onClick={}
-                >
-                    {<TextInputDialog
-                        buttonLabel="Add category" onSubmitFunction={this.props.addCategoryFunction} targetArray={this.props.categories} dialogLable="Enter new name"
-                    />}
-                </ListItem>)
+            return (null)
         }
     }
 
-    showSampleList() {
-        const tasks = this.props.tasks;
-        console.log(tasks);
-        if (tasks.length !== 0) {
-            console.log("mounting");
+    showTaskList() {
+        const insideTasks = this.props.tasks;
+        console.log(insideTasks);
+        if (insideTasks.length !== 0) {
             return (
                 <List>
-                    {tasks.map((task) => {
-                    return(
-                    <ListItem
-                    primaryText={task.name}
-                    />
-                    )})
-                }
+                    {insideTasks.map((task) => {
+                        return (<ListItem
+                            key={task.id}
+                            primaryText={task.name}
+                                          nestedItems={[
+                                              <ConfirmationDialog
+                                                  buttonLabel="Delete task" onSubmitFunction={this.props.deleteItemFunction}
+                                                  targetId = {task.id}
+                                                  targetArray={this.props.tasks} dialogLable={"Really delete? " + task.name}
+                                              />
+                                          ]}
+                        />);
+                    })}
                 </List>
             )
+        } else {
+            return (null)
         }
 
     }
 
     render() {
         return (
-            <div>
-                {this.showSubCategories()}
-                <Route path={'/' + this.props.id} component={this.showSampleList}/>
-        </div>
-
+            <ListItem
+                primaryText={this.props.name}
+                initiallyOpen
+                nestedListStyle={{marginLeft: '40px'}}
+                nestedItems={[
+                    <div>
+                        <TextInputDialog
+                            buttonLabel="Add category" onSubmitFunction={this.props.addCategoryFunction}
+                            targetArray={this.props.categories} dialogLable="Enter new name"
+                        />
+                        <ConfirmationDialog
+                            buttonLabel="Delete category" onSubmitFunction={this.props.deleteItemFunction}
+                            targetId = {this.props.id}
+                            targetArray={this.props.homeArray} dialogLable={"Really delete? " + this.props.name}
+                        />
+                        <TextInputDialog
+                            buttonLabel="Rename" onSubmitFunction={this.props.editNameFunction}
+                            targetId = {this.props.id}
+                            targetArray={this.props.homeArray} dialogLable="Enter new name"
+                        />
+                        <TextInputDialog
+                            buttonLabel="Add task" onSubmitFunction={this.props.addTaskFunction}
+                            targetArray={this.props.tasks}
+                            dialogLable="Enter new name"
+                        />
+                        <Route path={'/'} component={this.showTaskList}/>
+                        {this.showSubCategories()}
+                    </div>
+                ]
+                }
+            />
         )
     };
 }
