@@ -11,8 +11,9 @@
 
 import React from 'react';
 import Category from 'containers/Category/index';
+import { Switch, Route} from 'react-router-dom';
 import TextInputDialog from 'containers/TextInputDialog/index';
-import {List} from 'material-ui/List';
+import {List, ListItem} from 'material-ui/List';
 
 export default class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function//
     constructor(props) {
@@ -29,6 +30,7 @@ export default class HomePage extends React.Component { // eslint-disable-line r
             tasksTotal: 0,
             tasksSolved: 0,
             categories: [],
+            tasks: {},
         };
     }
 
@@ -42,13 +44,16 @@ export default class HomePage extends React.Component { // eslint-disable-line r
                 id: encodeURI(newCategoryName),
                 name: newCategoryName,
                 categories: [],
-                tasks: [],
+                tasks: {},
             }
         );
     }
 
     addCategory(newCategoryName, targetArray) {
-        targetArray.push(this.makeCategoryFromName(newCategoryName));
+        const newCategory = this.makeCategoryFromName(newCategoryName);
+        const newId = newCategory.id;
+        targetArray.push(newCategory);
+        this.updatedState.tasks[newId] = [];
         this.updateState();
     }
 
@@ -80,23 +85,39 @@ export default class HomePage extends React.Component { // eslint-disable-line r
         );
     }
 
-    addTask(newTaskName, targetArray) {
-        targetArray.push(this.makeTaskFromName(newTaskName));
+    addTask(newTaskName, randomArray, parrentCategoryId) {
+        console.log("inside", this.updatedState.tasks);
+        console.log("id is",parrentCategoryId);
+        console.log("push to", this.updatedState.tasks[parrentCategoryId]);
+        this.updatedState.tasks[parrentCategoryId].push(this.makeTaskFromName(newTaskName));
         this.updateState();
     }
 
     markTaskAsDone
 
-    moveItem(targetArray, originArray, targetId) {
-        const place = targetArray.findIndex((element) => {
-            return (targetId == element.id)
-        });
-        originArray.push(targetArray[place]);
-        targetArray.splice(place, 1);
-        this.updateState();
-    }
+    moveItem
 
     editTask
+
+    createTaskRouter() {
+        let router = [];
+        for (const taskCategory in this.updatedState.tasks) {
+            let returnComponent = ()=>{
+                return(
+                    this.showTaskList(this.updatedState.tasks[taskCategory])
+                );
+            };
+            router.push(<Route path="/" component={returnComponent} key={"route" + taskCategory} />);
+        }
+        return(
+            router
+        )
+    }
+
+    showTaskList(category) {
+        return(category.map((task)=>{return(<ListItem>
+            <p>{task.name}</p>
+        </ListItem>)}))};
 
     componentWillReceiveProps() {
         this.updateState();
@@ -108,15 +129,24 @@ export default class HomePage extends React.Component { // eslint-disable-line r
             <div>
                 <TextInputDialog buttonLabel="Add category" onSubmitFunction={this.addCategory}
                                  targetArray={this.updatedState.categories} dialogLable="Enter new name"/>
-                <List>
-                    {this.updatedState.categories.map((category) => {
-                        return (<Category {...category} key={category.id} homeArray={this.updatedState.categories}
-                                          addCategoryFunction={this.addCategory}
-                                          deleteItemFunction={this.deleteItem}
-                                          editNameFunction={this.editName}
-                                          addTaskFunction={this.addTask}/>);
-                    })};
-                </List>
+                <div style={{width:'500px', float:'left'}}>
+                    <List>
+                        {this.updatedState.categories.map((category) => {
+                            return (
+                                    <Category {...category} key={category.id} homeArray={this.updatedState.categories}
+                                              addCategoryFunction={this.addCategory}
+                                              deleteItemFunction={this.deleteItem}
+                                              editNameFunction={this.editName}
+                                              addTaskFunction={this.addTask}/>);
+                                    })};
+                    </List>
+                </div>
+                <div style={{width:'500px', float:'right'}}>
+                    <List>
+                        {this.createTaskRouter()}
+                    </List>
+                </div>
+
             </div>
         );
     }

@@ -10,7 +10,6 @@ import ConfirmationDialog from 'containers/ConfirmationDialog/index';
 export default class Category extends React.Component {
     constructor(props) {
         super(props);
-        this.showTaskList = this.showTaskList.bind(this);
     };
 
     showSubCategories() {
@@ -31,38 +30,14 @@ export default class Category extends React.Component {
         }
     }
 
-    showTaskList() {
-        const insideTasks = this.props.tasks;
-        console.log(insideTasks);
-        if (insideTasks.length !== 0) {
-            return (
-                <List>
-                    {insideTasks.map((task) => {
-                        return (<ListItem
-                            key={task.id}
-                            primaryText={task.name}
-                                          nestedItems={[
-                                              <ConfirmationDialog
-                                                  buttonLabel="Delete task" onSubmitFunction={this.props.deleteItemFunction}
-                                                  targetId = {task.id}
-                                                  targetArray={this.props.tasks} dialogLable={"Really delete? " + task.name}
-                                              />
-                                          ]}
-                        />);
-                    })}
-                </List>
-            )
-        } else {
-            return (null)
-        }
-
-    }
-
     render() {
         return (
             <ListItem
                 primaryText={this.props.name}
                 initiallyOpen
+                onClick={()=>{return(
+                    <Redirect to={"/" + this.props.id}/>
+                )}}
                 nestedListStyle={{marginLeft: '40px'}}
                 nestedItems={[
                     <div>
@@ -82,10 +57,10 @@ export default class Category extends React.Component {
                         />
                         <TextInputDialog
                             buttonLabel="Add task" onSubmitFunction={this.props.addTaskFunction}
+                            targetId = {this.props.id}
                             targetArray={this.props.tasks}
                             dialogLable="Enter new name"
                         />
-                        <Route path={'/'} component={this.showTaskList}/>
                         {this.showSubCategories()}
                     </div>
                 ]
