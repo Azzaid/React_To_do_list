@@ -6,7 +6,10 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
+import FontIcon from 'material-ui/FontIcon';
+
 
 export default class TextInputDialog extends React.Component {
     constructor(props) {
@@ -15,6 +18,25 @@ export default class TextInputDialog extends React.Component {
             open: false,
             textInput:'New category aded',
         };
+    }
+
+    displayButton() {
+        if (this.props.iconButton) {
+            return(
+                <IconButton
+                    children = {<FontIcon className="material-icons">{this.props.buttonIcon}</FontIcon>}
+                    onClick={this.handleOpen}
+                />
+            )
+        } else {
+            return(
+                <RaisedButton
+                    label={this.props.buttonLabel}
+                    primary
+                    onClick={this.handleOpen}
+                />
+            )
+        }
     }
 
 
@@ -53,7 +75,8 @@ export default class TextInputDialog extends React.Component {
 
         return (
             <div>
-                <RaisedButton label={this.props.buttonLabel} primary onClick={this.handleOpen} style={{dsplay : 'inline-block'}} />
+                {this.displayButton()}
+
                 <Dialog
                     title={this.props.dialogLable}
                     actions={actions}

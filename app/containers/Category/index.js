@@ -6,6 +6,8 @@ import {Switch, Route, Redirect, Link} from 'react-router-dom';
 import {List, ListItem} from 'material-ui/List';
 import TextInputDialog from 'containers/TextInputDialog/index';
 import ConfirmationDialog from 'containers/ConfirmationDialog/index';
+import Checkbox from 'material-ui/Checkbox';
+
 
 export default class Category extends React.Component {
     constructor(props) {
@@ -40,13 +42,19 @@ export default class Category extends React.Component {
                 onClick={()=>{if (this.props.location.pathname !== ('/'+this.props.id)) {
                     console.log("now were are here", this.props.location.pathname);
                     this.props.history.push('/'+this.props.id);}}}
+                leftCheckbox={<Checkbox
+                />}
+                rightIconButton={<TextInputDialog
+                    iconButton= {true}
+                    buttonIcon={'home'}
+                    buttonLabel="Add category"
+                    onSubmitFunction={this.props.addCategoryFunction}
+                    targetArray={this.props.categories}
+                    dialogLable="Enter new name"
+                />}
                 nestedListStyle={{marginLeft: '40px'}}
                 nestedItems={[
                     <div>
-                        <TextInputDialog
-                            buttonLabel="Add category" onSubmitFunction={this.props.addCategoryFunction}
-                            targetArray={this.props.categories} dialogLable="Enter new name"
-                        />
                         <ConfirmationDialog
                             buttonLabel="Delete category" onSubmitFunction={this.props.deleteItemFunction}
                             targetId = {this.props.id}

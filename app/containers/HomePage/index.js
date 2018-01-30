@@ -127,7 +127,7 @@ export default class HomePage extends React.Component { // eslint-disable-line r
     render() {
         this.updatedState = this.state;
         return (
-            <div style={{'display':'grid', 'gridTemplateAreas': '"a b b" "a c d"'}}>
+            <div>
                 <TextInputDialog buttonLabel="Add category" onSubmitFunction={this.addCategory}
                                  targetArray={this.updatedState.categories} dialogLable="Enter new name"/>
                     <List style={{width:'500px', float:'left'}}>
