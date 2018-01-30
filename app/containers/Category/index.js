@@ -22,6 +22,8 @@ export default class Category extends React.Component {
                                       deleteItemFunction={this.props.deleteItemFunction}
                                       addTaskFunction={this.props.addTaskFunction}
                                       editNameFunction={this.props.editNameFunction}
+                                      history={this.props.history}
+                                      location={this.props.location}
                     />);
                 })
             );
@@ -35,9 +37,9 @@ export default class Category extends React.Component {
             <ListItem
                 primaryText={this.props.name}
                 initiallyOpen
-                onClick={()=>{return(
-                    <Redirect to={"/" + this.props.id}/>
-                )}}
+                onClick={()=>{if (this.props.location.pathname !== ('/'+this.props.id)) {
+                    console.log("now were are here", this.props.location.pathname);
+                    this.props.history.push('/'+this.props.id);}}}
                 nestedListStyle={{marginLeft: '40px'}}
                 nestedItems={[
                     <div>

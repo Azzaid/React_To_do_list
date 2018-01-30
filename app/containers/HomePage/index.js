@@ -86,9 +86,6 @@ export default class HomePage extends React.Component { // eslint-disable-line r
     }
 
     addTask(newTaskName, randomArray, parrentCategoryId) {
-        console.log("inside", this.updatedState.tasks);
-        console.log("id is",parrentCategoryId);
-        console.log("push to", this.updatedState.tasks[parrentCategoryId]);
         this.updatedState.tasks[parrentCategoryId].push(this.makeTaskFromName(newTaskName));
         this.updateState();
     }
@@ -103,11 +100,12 @@ export default class HomePage extends React.Component { // eslint-disable-line r
         let router = [];
         for (const taskCategory in this.updatedState.tasks) {
             let returnComponent = ()=>{
+                const expectedList = this.showTaskList(this.updatedState.tasks[taskCategory]);
                 return(
-                    this.showTaskList(this.updatedState.tasks[taskCategory])
+                    expectedList
                 );
             };
-            router.push(<Route path="/" component={returnComponent} key={"route" + taskCategory} />);
+            router.push(<Route path={'/'+taskCategory} component={returnComponent} key={"route" + taskCategory} />);
         }
         return(
             router
@@ -115,9 +113,12 @@ export default class HomePage extends React.Component { // eslint-disable-line r
     }
 
     showTaskList(category) {
-        return(category.map((task)=>{return(<ListItem>
-            <p>{task.name}</p>
-        </ListItem>)}))};
+        return(<List>
+            {category.map((task)=>{return(<ListItem
+                primaryText={task.name}
+            />)})}
+        </List>
+            )};
 
     componentWillReceiveProps() {
         this.updateState();
@@ -126,27 +127,25 @@ export default class HomePage extends React.Component { // eslint-disable-line r
     render() {
         this.updatedState = this.state;
         return (
-            <div>
+            <div style={{'display':'grid', 'gridTemplateAreas': '"a b b" "a c d"'}}>
                 <TextInputDialog buttonLabel="Add category" onSubmitFunction={this.addCategory}
                                  targetArray={this.updatedState.categories} dialogLable="Enter new name"/>
-                <div style={{width:'500px', float:'left'}}>
-                    <List>
+                    <List style={{width:'500px', float:'left'}}>
                         {this.updatedState.categories.map((category) => {
                             return (
                                     <Category {...category} key={category.id} homeArray={this.updatedState.categories}
                                               addCategoryFunction={this.addCategory}
                                               deleteItemFunction={this.deleteItem}
                                               editNameFunction={this.editName}
-                                              addTaskFunction={this.addTask}/>);
+                                              addTaskFunction={this.addTask}
+                                              history={this.props.history}
+                                              location={this.props.location}
+                                    />);
                                     })};
                     </List>
-                </div>
-                <div style={{width:'500px', float:'right'}}>
-                    <List>
+                    <List style={{'width':'500px', 'float':'right'}}>
                         {this.createTaskRouter()}
                     </List>
-                </div>
-
             </div>
         );
     }
