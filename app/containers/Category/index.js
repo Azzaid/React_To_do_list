@@ -7,6 +7,7 @@ import {List, ListItem} from 'material-ui/List';
 import TextInputDialog from 'containers/TextInputDialog/index';
 import ConfirmationDialog from 'containers/ConfirmationDialog/index';
 import Checkbox from 'material-ui/Checkbox';
+import IconButton from 'material-ui/IconButton';
 
 
 export default class Category extends React.Component {
@@ -42,19 +43,18 @@ export default class Category extends React.Component {
                 onClick={()=>{if (this.props.location.pathname !== ('/'+this.props.id)) {
                     console.log("now were are here", this.props.location.pathname);
                     this.props.history.push('/'+this.props.id);}}}
-                leftCheckbox={<Checkbox
-                />}
-                rightIconButton={<TextInputDialog
-                    iconButton= {true}
-                    buttonIcon={'home'}
-                    buttonLabel="Add category"
-                    onSubmitFunction={this.props.addCategoryFunction}
-                    targetArray={this.props.categories}
-                    dialogLable="Enter new name"
-                />}
-                nestedListStyle={{marginLeft: '40px'}}
+                nestedListStyle={{marginLeft: '40px', display: 'inline-block'}}
                 nestedItems={[
-                    <div>
+                    <Switch>
+                        <Route path=""
+                        <TextInputDialog
+                            iconButton= {true}
+                            buttonIcon={'home'}
+                            buttonLabel="Add category"
+                            onSubmitFunction={this.props.addCategoryFunction}
+                            targetArray={this.props.categories}
+                            dialogLable="Enter new name"
+                        />
                         <ConfirmationDialog
                             buttonLabel="Delete category" onSubmitFunction={this.props.deleteItemFunction}
                             targetId = {this.props.id}
@@ -72,7 +72,7 @@ export default class Category extends React.Component {
                             dialogLable="Enter new name"
                         />
                         {this.showSubCategories()}
-                    </div>
+                    </Switch>
                 ]
                 }
             />

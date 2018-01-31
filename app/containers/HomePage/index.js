@@ -130,7 +130,7 @@ export default class HomePage extends React.Component { // eslint-disable-line r
             <div>
                 <TextInputDialog buttonLabel="Add category" onSubmitFunction={this.addCategory}
                                  targetArray={this.updatedState.categories} dialogLable="Enter new name"/>
-                    <List style={{width:'500px', float:'left'}}>
+                    <List style={{width:'500px', float:'left', border:'solid 5px white'}}>
                         {this.updatedState.categories.map((category) => {
                             return (
                                     <Category {...category} key={category.id} homeArray={this.updatedState.categories}
