@@ -47,7 +47,7 @@ export default class Category extends React.Component {
                 nestedItems={[
                     <div>
                     <Switch>
-                        <Route path=/[\/](?!{this.props.id}).*[\/]/ component={
+                        <Route path={'/'+this.props.id} component={
                             ()=>{return(
                                 <div>
                                     <TextInputDialog

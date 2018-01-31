@@ -11,9 +11,10 @@
 
 import React from 'react';
 import Category from 'containers/Category/index';
-import { Switch, Route} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import TextInputDialog from 'containers/TextInputDialog/index';
 import {List, ListItem} from 'material-ui/List';
+import TaskList from 'containers/TaskList/index';
 
 export default class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function//
     constructor(props) {
@@ -32,6 +33,7 @@ export default class HomePage extends React.Component { // eslint-disable-line r
             categories: [],
             tasks: {},
         };
+
     }
 
     updateState() {
@@ -45,6 +47,17 @@ export default class HomePage extends React.Component { // eslint-disable-line r
                 name: newCategoryName,
                 categories: [],
                 tasks: {},
+            }
+        );
+    }
+
+    makeTaskFromName(newTaskName) {
+        return (
+            {
+                id: encodeURI(newTaskName),
+                name: newTaskName,
+                isFinished: false,
+                description: '',
             }
         );
     }
@@ -74,17 +87,6 @@ export default class HomePage extends React.Component { // eslint-disable-line r
         this.updateState();
     }
 
-    makeTaskFromName(newTaskName) {
-        return (
-            {
-                id: encodeURI(newTaskName),
-                name: newTaskName,
-                isFinished: false,
-                description: '',
-            }
-        );
-    }
-
     addTask(newTaskName, randomArray, parrentCategoryId) {
         this.updatedState.tasks[parrentCategoryId].push(this.makeTaskFromName(newTaskName));
         this.updateState();
@@ -96,30 +98,6 @@ export default class HomePage extends React.Component { // eslint-disable-line r
 
     editTask
 
-    createTaskRouter() {
-        let router = [];
-        for (const taskCategory in this.updatedState.tasks) {
-            let returnComponent = ()=>{
-                const expectedList = this.showTaskList(this.updatedState.tasks[taskCategory]);
-                return(
-                    expectedList
-                );
-            };
-            router.push(<Route path={'/'+taskCategory} component={returnComponent} key={"route" + taskCategory} />);
-        }
-        return(
-            router
-        )
-    }
-
-    showTaskList(category) {
-        return(<List>
-            {category.map((task)=>{return(<ListItem
-                primaryText={task.name}
-            />)})}
-        </List>
-            )};
-
     componentWillReceiveProps() {
         this.updateState();
     }
@@ -127,9 +105,12 @@ export default class HomePage extends React.Component { // eslint-disable-line r
     render() {
         this.updatedState = this.state;
         return (
-            <div>
+            <div style={{display:'grid', gridTemplateAreas:'"Header . . Filter" "ProgressBar ProgressBar ProgressBar ProgressBar" "AddCategoryButton . . ." "CategoryThree CategoryThree TaskList TaskList"'}}>
+                <div style={{gridArea:'AddCategoryButton'}}>
                 <TextInputDialog buttonLabel="Add category" onSubmitFunction={this.addCategory}
                                  targetArray={this.updatedState.categories} dialogLable="Enter new name"/>
+                </div>
+                <div style={{gridArea:'CategoryThree'}}>
                     <List style={{width:'500px', float:'left', border:'solid 3px white'}}>
                         {this.updatedState.categories.map((category) => {
                             return (
@@ -143,9 +124,12 @@ export default class HomePage extends React.Component { // eslint-disable-line r
                                     />);
                                     })};
                     </List>
+                </div>
+                <div style={{gridArea:'TaskList'}}>
                     <List style={{width:'500px', float:'left', border:'solid 3px white'}}>
-                        {this.createTaskRouter()}
+                        <TaskList taskList={this.state.tasks}/>
                     </List>
+                </div>
             </div>
         );
     }
