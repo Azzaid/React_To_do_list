@@ -45,35 +45,54 @@ export default class Category extends React.Component {
                     this.props.history.push('/'+this.props.id);}}}
                 nestedListStyle={{marginLeft: '40px', display: 'inline-block'}}
                 nestedItems={[
+                    <div>
                     <Switch>
-                        <Route path=""
-                        <TextInputDialog
-                            iconButton= {true}
-                            buttonIcon={'home'}
-                            buttonLabel="Add category"
-                            onSubmitFunction={this.props.addCategoryFunction}
-                            targetArray={this.props.categories}
-                            dialogLable="Enter new name"
-                        />
-                        <ConfirmationDialog
-                            buttonLabel="Delete category" onSubmitFunction={this.props.deleteItemFunction}
-                            targetId = {this.props.id}
-                            targetArray={this.props.homeArray} dialogLable={"Really delete? " + this.props.name}
-                        />
-                        <TextInputDialog
-                            buttonLabel="Rename" onSubmitFunction={this.props.editNameFunction}
-                            targetId = {this.props.id}
-                            targetArray={this.props.homeArray} dialogLable="Enter new name"
-                        />
-                        <TextInputDialog
-                            buttonLabel="Add task" onSubmitFunction={this.props.addTaskFunction}
-                            targetId = {this.props.id}
-                            targetArray={this.props.tasks}
-                            dialogLable="Enter new name"
-                        />
-                        {this.showSubCategories()}
+                        <Route path=/[\/](?!{this.props.id}).*[\/]/ component={
+                            ()=>{return(
+                                <div>
+                                    <TextInputDialog
+                                        iconButton= {true}
+                                        buttonIcon={'home'}
+                                        buttonLabel="Move task here"
+                                        onSubmitFunction={this.props.addCategoryFunction}
+                                        targetArray={this.props.categories}
+                                        dialogLable="Enter new name"
+                                    />
+                                </div>
+                            )}
+                        }/>
+                        <Route component={()=>{return(
+                        <div>
+                            <TextInputDialog
+                                iconButton= {true}
+                                buttonIcon={'home'}
+                                buttonLabel="Add category"
+                                onSubmitFunction={this.props.addCategoryFunction}
+                                targetArray={this.props.categories}
+                                dialogLable="Enter new name"
+                            />
+                            <ConfirmationDialog
+                                buttonLabel="Delete category" onSubmitFunction={this.props.deleteItemFunction}
+                                targetId = {this.props.id}
+                                targetArray={this.props.homeArray} dialogLable={"Really delete? " + this.props.name}
+                            />
+                            <TextInputDialog
+                                buttonLabel="Rename" onSubmitFunction={this.props.editNameFunction}
+                                targetId = {this.props.id}
+                                targetArray={this.props.homeArray} dialogLable="Enter new name"
+                            />
+                            <TextInputDialog
+                                buttonLabel="Add task" onSubmitFunction={this.props.addTaskFunction}
+                                targetId = {this.props.id}
+                                targetArray={this.props.tasks}
+                                dialogLable="Enter new name"
+                            />
+                        </div>
+                        )}}/>
                     </Switch>
-                ]
+                    {this.showSubCategories()}
+                    </div>
+                    ]
                 }
             />
         )
