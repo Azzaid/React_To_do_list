@@ -2,8 +2,10 @@
  * Created by Johanas on 31.01.2018.
  */
 import React from 'react';
-import {Switch, Route} from 'react-router-dom';
+import {Switch, Route, Link} from 'react-router-dom';
 import {List, ListItem} from 'material-ui/List';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 export default class TaskList extends React.Component {
     constructor(props) {
@@ -13,9 +15,11 @@ export default class TaskList extends React.Component {
     createCategoryRouter() {
             let router = [];
             for (const taskCategory in this.props.taskList) {
+                let workCategory = this.props.taskList[taskCategory];
+                console.log("now we got some", workCategory);
                 router.push(<Route path={'/'+taskCategory} component={
                     ()=>{
-                        return(this.createTasksList(taskCategory))
+                        return(this.createTaskRouter(workCategory, taskCategory))
                     }
                 } key={"route" + taskCategory} />);
             }
@@ -26,38 +30,57 @@ export default class TaskList extends React.Component {
                 }
     }
 
-    createTaskRouter(category) {
+    createTaskRouter(category, categoryName) {
+        console.log("Routing tasks in ", category);
         return(
         <Switch>
-            {this.props.taskList[category].map((task)=>{
+            {category.map((task)=>{
+                console.log("avaitFor", "/"+categoryName+"/"+task.id);
                 return(
                     <Route
-                        path={"/"+task.id}
-                        component={this.redactTask()}
+                        path={"/"+categoryName+"/"+task.id}
+                        component={this.redactTask}
                     />
                 )
             })}
-            <Route component={this.createTasksList}/>
+            <Route component={()=>{return(
+                this.createTasksList(category, categoryName)
+            )}}/>
         </Switch>
         )
     }
 
     redactTask() {
+        console.log("task is here!!");
         return(
-          <p>Task choosen</p>
+          <div>
+              <TextField
+              <TextField
+                  id="text-field-controlled"
+                  textInput={this.state.textInput}
+                  onChange={this.handleChange}
+              />
+              />
+          </div>
         )
     }
 
 
-    createTasksList(category) {
+    createTasksList(category, categoryName) {
+        console.log
         return(
             <List style={{border: 'solid 3px white'}}>
-            {this.props.taskList[category].map((task)=>{
+            {category.map((task)=>{
+                console.log("location is ", this.props.location);
                 return(
                     <ListItem
                         primaryText={task.name}
+                        key = {task.id}
                         onClick={()=>{
-                            this.props.history.push(this.props.location + '/' + this.props.id);}}
+                            const pathToTask = "/"+categoryName+"/"+task.id;
+                            if (this.props.location.pathname !== pathToTask) {
+                            console.log("now were are here", this.props.location, this.props.match);
+                            this.props.history.push(pathToTask);}}}
                     />
                 )
             })}

@@ -94,9 +94,17 @@ export default class HomePage extends React.Component { // eslint-disable-line r
 
     markTaskAsDone
 
-    moveItem
+    moveTask() {}
 
-    editTask
+    editTask(newName, newDescription, targetArray, itemToEditId) {
+        const place = targetArray.findIndex((element) => {
+            return (itemToEditId == element.id)
+        });
+        targetArray[place].id = encodeURI(newName);
+        targetArray[place].name = newName;
+        targetArray[place].description = newDescription;
+        this.updateState();
+    }
 
     componentWillReceiveProps() {
         this.updateState();
