@@ -41,7 +41,7 @@ export default class Category extends React.Component {
                 primaryText={this.props.name}
                 initiallyOpen
                 onClick={()=>{if (this.props.location.pathname !== ('/'+this.props.id)) {
-                    console.log("now were are here", this.props.location.pathname);
+                    console.log("now were are here", this.props.location, this.props.match);
                     this.props.history.push('/'+this.props.id);}}}
                 nestedListStyle={{marginLeft: '40px', display: 'inline-block'}}
                 nestedItems={[
@@ -64,7 +64,6 @@ export default class Category extends React.Component {
                         <Route component={()=>{return(
                         <div>
                             <TextInputDialog
-                                iconButton= {true}
                                 buttonIcon={'home'}
                                 buttonLabel="Add category"
                                 onSubmitFunction={this.props.addCategoryFunction}

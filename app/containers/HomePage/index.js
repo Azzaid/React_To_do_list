@@ -105,31 +105,42 @@ export default class HomePage extends React.Component { // eslint-disable-line r
     render() {
         this.updatedState = this.state;
         return (
-            <div style={{display:'grid', gridTemplateAreas:'"Header . . Filter" "ProgressBar ProgressBar ProgressBar ProgressBar" "AddCategoryButton . . ." "CategoryThree CategoryThree TaskList TaskList"'}}>
-                <div style={{gridArea:'AddCategoryButton'}}>
-                <TextInputDialog buttonLabel="Add category" onSubmitFunction={this.addCategory}
-                                 targetArray={this.updatedState.categories} dialogLable="Enter new name"/>
+            <div style={{
+                display: 'grid',
+                gridTemplateAreas: '"Header Filter" "ProgressBar ProgressBar" "AddCategoryButton ." "CategoryThree TaskList"',
+                gridTemplateColumns: 'auto auto',
+                gridColumnGap: '5px',
+                gridRowGap: '5px',
+            }}>
+                <div style={{gridArea: 'AddCategoryButton'}}>
+                    <TextInputDialog buttonLabel="Add category" onSubmitFunction={this.addCategory}
+                                     targetArray={this.updatedState.categories} dialogLable="Enter new name"/>
                 </div>
-                <div style={{gridArea:'CategoryThree'}}>
-                    <List style={{width:'500px', float:'left', border:'solid 3px white'}}>
+                    <List style={{gridArea: 'CategoryThree', border: 'solid 3px white', borderRadius: '3px' }}>
                         {this.updatedState.categories.map((category) => {
                             return (
-                                    <Category {...category} key={category.id} homeArray={this.updatedState.categories}
-                                              addCategoryFunction={this.addCategory}
-                                              deleteItemFunction={this.deleteItem}
-                                              editNameFunction={this.editName}
-                                              addTaskFunction={this.addTask}
-                                              history={this.props.history}
-                                              location={this.props.location}
-                                    />);
-                                    })};
+                                <Category {...category} key={category.id} homeArray={this.updatedState.categories}
+                                          addCategoryFunction={this.addCategory}
+                                          deleteItemFunction={this.deleteItem}
+                                          editNameFunction={this.editName}
+                                          addTaskFunction={this.addTask}
+                                          history={this.props.history}
+                                          location={this.props.location}
+                                />);
+                        })};
                     </List>
-                </div>
-                <div style={{gridArea:'TaskList'}}>
-                    <List style={{width:'500px', float:'left', border:'solid 3px white'}}>
-                        <TaskList taskList={this.state.tasks}/>
-                    </List>
-                </div>
+                <Route path="/:currentCategory" component={
+                    () => {
+                        return(
+                            <TaskList
+                                taskList={this.state.tasks}
+                                history={this.props.history}
+                                location={this.props.location}
+                            />
+                        );
+                    }
+                }
+                />
             </div>
         );
     }

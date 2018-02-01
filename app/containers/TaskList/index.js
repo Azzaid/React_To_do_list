@@ -2,46 +2,75 @@
  * Created by Johanas on 31.01.2018.
  */
 import React from 'react';
-import {Route} from 'react-router-dom';
-import {ListItem} from 'material-ui/List';
+import {Switch, Route} from 'react-router-dom';
+import {List, ListItem} from 'material-ui/List';
 
-export default class Category extends React.Component {
+export default class TaskList extends React.Component {
     constructor(props) {
         super(props);
     };
 
-    createTasksRouter() {
-        if (this.props.taskList.length !== 0) {
+    createCategoryRouter() {
             let router = [];
             for (const taskCategory in this.props.taskList) {
-                router.push(<Route path={'/'+taskCategory} component={this.createTasksList(taskCategory)} key={"route" + taskCategory} />);
+                router.push(<Route path={'/'+taskCategory} component={
+                    ()=>{
+                        return(this.createTasksList(taskCategory))
+                    }
+                } key={"route" + taskCategory} />);
             }
-            return(
-                router
-            )
-        } else {
-            return (
-                <ListItem
-                    primaryText={'No tasks sheduled'}
-                />
-            )
-        }
+                if (router.length !== 0) {
+                    return(router)
+                } else {
+                return(null)
+                }
     }
+
+    createTaskRouter(category) {
+        return(
+        <Switch>
+            {this.props.taskList[category].map((task)=>{
+                return(
+                    <Route
+                        path={"/"+task.id}
+                        component={this.redactTask()}
+                    />
+                )
+            })}
+            <Route component={this.createTasksList}/>
+        </Switch>
+        )
+    }
+
+    redactTask() {
+        return(
+          <p>Task choosen</p>
+        )
+    }
+
 
     createTasksList(category) {
         return(
-            this.props.taskList[category].map(()=>{
+            <List style={{border: 'solid 3px white'}}>
+            {this.props.taskList[category].map((task)=>{
                 return(
                     <ListItem
                         primaryText={task.name}
+                        onClick={()=>{
+                            this.props.history.push(this.props.location + '/' + this.props.id);}}
                     />
                 )
-            })
+            })}
+            </List>
         )
     }
 
 
     render () {
-        this.createTasksRouter();
+        return(
+            <div style={{gridArea: 'TaskList'}}>
+                {this.createCategoryRouter()}
+            </div>
+            )
     }
 }
