@@ -28,6 +28,7 @@ export default class HomePage extends React.Component { // eslint-disable-line r
         this.editName = this.editName.bind(this);
         this.editTask = this.editTask.bind(this);
         this.moveTask = this.moveTask.bind(this);
+        this.markCategoryAsDone = this.markCategoryAsDone.bind(this);
         this.state = {
             tasksTotal: 0,
             tasksSolved: 0,
@@ -68,6 +69,18 @@ export default class HomePage extends React.Component { // eslint-disable-line r
         const newId = newCategory.id;
         targetArray.push(newCategory);
         this.updatedState.tasks[newId] = [];
+        this.updateState();
+    }
+
+    markCategoryAsDone(categoryId, targetArray) {
+        const place = targetArray.findIndex((element) => {
+            return (itemToDeleteId == element.id)
+        });
+        if (targetArray[place].isFinished) {
+            targetArray[place].isFinished = false;
+        } else {
+            targetArray[place].isFinished = true;
+        }
         this.updateState();
     }
 
@@ -141,6 +154,7 @@ export default class HomePage extends React.Component { // eslint-disable-line r
                                           editNameFunction={this.editName}
                                           addTaskFunction={this.addTask}
                                           moveTaskFunction={this.moveTask}
+                                          markCategoryAsDoneFunction={this.markCategoryAsDone}
                                           history={this.props.history}
                                           location={this.props.location}
                                 />);

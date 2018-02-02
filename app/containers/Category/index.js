@@ -7,6 +7,7 @@ import {ListItem} from 'material-ui/List';
 import TextInputDialog from 'containers/TextInputDialog/index';
 import ConfirmationDialog from 'containers/ConfirmationDialog/index';
 import RaisedButton from 'material-ui/RaisedButton';
+import Checkbox from 'material-ui/Checkbox';
 
 
 export default class Category extends React.Component {
@@ -38,6 +39,8 @@ export default class Category extends React.Component {
                                       deleteItemFunction={this.props.deleteItemFunction}
                                       addTaskFunction={this.props.addTaskFunction}
                                       editNameFunction={this.props.editNameFunction}
+                                      moveTaskFunction={this.props.moveTaskFunction}
+                                      markCategoryAsDoneFunction={this.props.markCategoryAsDoneFunction}
                                       history={this.props.history}
                                       location={this.props.location}
                     />);
@@ -57,6 +60,11 @@ export default class Category extends React.Component {
                     console.log("now were are here", this.props.location, this.props.match);
                     this.props.history.push('/'+this.props.id);}}}
                 nestedListStyle={{marginLeft: '40px', display: 'inline-block'}}
+                isKeyboardFocused={this.state.focused}
+                leftIcon={<Checkbox
+                    checked={this.props.isFinished}
+                    onCheck={this.props.markCategoryAsDoneFunction}
+                />}
                 nestedItems={[
                     <div>
                     <Switch>
