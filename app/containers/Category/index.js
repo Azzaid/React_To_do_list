@@ -3,17 +3,30 @@
  */
 import React from 'react';
 import {Switch, Route, Redirect, Link} from 'react-router-dom';
-import {List, ListItem} from 'material-ui/List';
+import {ListItem} from 'material-ui/List';
 import TextInputDialog from 'containers/TextInputDialog/index';
 import ConfirmationDialog from 'containers/ConfirmationDialog/index';
-import Checkbox from 'material-ui/Checkbox';
-import IconButton from 'material-ui/IconButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
 
 export default class Category extends React.Component {
     constructor(props) {
         super(props);
+        this.state={
+          focused:false,
+        }
     };
+    componentWillReceiveProps(){
+      if (this.props.location.pathname !== ('/'+this.props.id)) {
+        this.setState({
+          focused:true,
+        })
+      } else {
+        this.setState({
+          focused:false,
+        })
+      }
+    }
 
     showSubCategories() {
         const subCategories = this.props.categories;
@@ -47,19 +60,21 @@ export default class Category extends React.Component {
                 nestedItems={[
                     <div>
                     <Switch>
-                        <Route path={'/'+this.props.id} component={
-                            ()=>{return(
-                                <div>
-                                    <TextInputDialog
-                                        iconButton= {true}
-                                        buttonIcon={'home'}
-                                        buttonLabel="Move task here"
-                                        onSubmitFunction={this.props.addCategoryFunction}
-                                        targetArray={this.props.categories}
-                                        dialogLable="Enter new name"
-                                    />
-                                </div>
-                            )}
+                        <Route path={'/:currentCategoryId/:currentTaskId'} component={
+                            (props)=>{
+                              return(
+                                <RaisedButton
+                                  label={"move task"}
+                                  primary
+                                  onClick={
+                                    ()=> {
+                                      this.props.moveTaskFunction(props.match.params.currentCategoryId, this.props.id, props.match.params.currentTaskId);
+                                      this.props.history.push('/'+this.props.id+'/'+props.match.params.currentTaskId);
+                                    }
+                                  }
+                                />
+                              )
+                            }
                         }/>
                         <Route component={()=>{return(
                         <div>

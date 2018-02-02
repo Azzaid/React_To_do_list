@@ -26,7 +26,8 @@ export default class HomePage extends React.Component { // eslint-disable-line r
         this.addTask = this.addTask.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
         this.editName = this.editName.bind(this);
-
+        this.editTask = this.editTask.bind(this);
+        this.moveTask = this.moveTask.bind(this);
         this.state = {
             tasksTotal: 0,
             tasksSolved: 0,
@@ -94,19 +95,24 @@ export default class HomePage extends React.Component { // eslint-disable-line r
 
     markTaskAsDone
 
-    moveTask() {}
+    moveTask(oldArrayId, targetArrayId, taskId) {
+      const place = this.updatedState.tasks[oldArrayId].findIndex((element) => {
+        return (taskId == element.id);
+      });
+      const taskToMove = this.updatedState.tasks[oldArrayId][place];
+      this.updatedState.tasks[targetArrayId].push(taskToMove);
+      this.updatedState.tasks[oldArrayId].splice(place, 1);
+    }
 
     editTask(newName, newDescription, targetArray, itemToEditId) {
         const place = targetArray.findIndex((element) => {
             return (itemToEditId == element.id)
         });
+      console.log("now update", targetArray[place], "with name", newName);
         targetArray[place].id = encodeURI(newName);
         targetArray[place].name = newName;
         targetArray[place].description = newDescription;
-        this.updateState();
-    }
-
-    componentWillReceiveProps() {
+      console.log("and got", targetArray[place]);
         this.updateState();
     }
 
@@ -127,11 +133,14 @@ export default class HomePage extends React.Component { // eslint-disable-line r
                     <List style={{gridArea: 'CategoryThree', border: 'solid 3px white', borderRadius: '3px' }}>
                         {this.updatedState.categories.map((category) => {
                             return (
-                                <Category {...category} key={category.id} homeArray={this.updatedState.categories}
+                                <Category {...category}
+                                          key={category.id}
+                                          homeArray={this.updatedState.categories}
                                           addCategoryFunction={this.addCategory}
                                           deleteItemFunction={this.deleteItem}
                                           editNameFunction={this.editName}
                                           addTaskFunction={this.addTask}
+                                          moveTaskFunction={this.moveTask}
                                           history={this.props.history}
                                           location={this.props.location}
                                 />);
@@ -144,6 +153,7 @@ export default class HomePage extends React.Component { // eslint-disable-line r
                                 taskList={this.state.tasks}
                                 history={this.props.history}
                                 location={this.props.location}
+                                taskModifyFunction={this.editTask}
                             />
                         );
                     }

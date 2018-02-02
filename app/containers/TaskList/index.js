@@ -4,8 +4,7 @@
 import React from 'react';
 import {Switch, Route, Link} from 'react-router-dom';
 import {List, ListItem} from 'material-ui/List';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import TaskModifyField from 'containers/TaskModifyField/index';
 
 export default class TaskList extends React.Component {
     constructor(props) {
@@ -14,14 +13,14 @@ export default class TaskList extends React.Component {
 
     createCategoryRouter() {
             let router = [];
-            for (const taskCategory in this.props.taskList) {
-                let workCategory = this.props.taskList[taskCategory];
-                console.log("now we got some", workCategory);
-                router.push(<Route path={'/'+taskCategory} component={
+            for (const categoryId in this.props.taskList) {
+                let workArray = this.props.taskList[categoryId];
+                console.log("now we got some", workArray);
+                router.push(<Route path={'/'+categoryId} component={
                     ()=>{
-                        return(this.createTaskRouter(workCategory, taskCategory))
+                        return(this.createTaskRouter(workArray, categoryId))
                     }
-                } key={"route" + taskCategory} />);
+                } key={"catRoute" + categoryId} />);
             }
                 if (router.length !== 0) {
                     return(router)
@@ -30,44 +29,37 @@ export default class TaskList extends React.Component {
                 }
     }
 
-    createTaskRouter(category, categoryName) {
-        console.log("Routing tasks in ", category);
+    createTaskRouter(category, categoryId) {
         return(
         <Switch>
             {category.map((task)=>{
-                console.log("avaitFor", "/"+categoryName+"/"+task.id);
+                console.log("avaitFor", "/"+categoryId+"/"+task.id);
                 return(
                     <Route
-                        path={"/"+categoryName+"/"+task.id}
-                        component={this.redactTask}
+                        path={"/"+categoryId+"/"+task.id}
+                        key={"taskRoute" + task.id}
+                        component={()=>{
+                            return(
+                                <TaskModifyField
+                                    homeArray={category}
+                                    homeArrayId={categoryId}
+                                    task={task}
+                                    taskModifyFunction={this.props.taskModifyFunction}
+                                    history={this.props.history}
+                                />
+                            )
+                        }}
                     />
                 )
             })}
             <Route component={()=>{return(
-                this.createTasksList(category, categoryName)
+                this.createTasksList(category, categoryId)
             )}}/>
         </Switch>
-        )
+        );
     }
-
-    redactTask() {
-        console.log("task is here!!");
-        return(
-          <div>
-              <TextField
-              <TextField
-                  id="text-field-controlled"
-                  textInput={this.state.textInput}
-                  onChange={this.handleChange}
-              />
-              />
-          </div>
-        )
-    }
-
 
     createTasksList(category, categoryName) {
-        console.log
         return(
             <List style={{border: 'solid 3px white'}}>
             {category.map((task)=>{
