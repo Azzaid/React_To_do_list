@@ -13,8 +13,9 @@ import React from 'react';
 import Category from 'containers/Category/index';
 import {Route} from 'react-router-dom';
 import TextInputDialog from 'containers/TextInputDialog/index';
-import {List, ListItem} from 'material-ui/List';
+import {List} from 'material-ui/List';
 import TaskList from 'containers/TaskList/index';
+import LinearProgress from 'material-ui/LinearProgress';
 
 export default class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function//
     constructor(props) {
@@ -69,17 +70,20 @@ export default class HomePage extends React.Component { // eslint-disable-line r
         const newId = newCategory.id;
         targetArray.push(newCategory);
         this.updatedState.tasks[newId] = [];
+        this.updatedState.tasksTotal += 1;
         this.updateState();
     }
 
     markCategoryAsDone(categoryId, targetArray) {
         const place = targetArray.findIndex((element) => {
-            return (itemToDeleteId == element.id)
+            return (categoryId == element.id)
         });
         if (targetArray[place].isFinished) {
             targetArray[place].isFinished = false;
+            this.updatedState.tasksSolved -= 1;
         } else {
             targetArray[place].isFinished = true;
+            this.updatedState.tasksSolved += 1;
         }
         this.updateState();
     }
@@ -105,8 +109,6 @@ export default class HomePage extends React.Component { // eslint-disable-line r
         this.updatedState.tasks[parrentCategoryId].push(this.makeTaskFromName(newTaskName));
         this.updateState();
     }
-
-    markTaskAsDone
 
     moveTask(oldArrayId, targetArrayId, taskId) {
       const place = this.updatedState.tasks[oldArrayId].findIndex((element) => {
@@ -139,6 +141,9 @@ export default class HomePage extends React.Component { // eslint-disable-line r
                 gridColumnGap: '5px',
                 gridRowGap: '5px',
             }}>
+                <div style={{gridArea: 'ProgressBar'}}>
+                    <LinearProgress mode="determinate" min="0" value={this.state.tasksSolved} max={this.state.tasksTotal} />
+                </div>
                 <div style={{gridArea: 'AddCategoryButton'}}>
                     <TextInputDialog buttonLabel="Add category" onSubmitFunction={this.addCategory}
                                      targetArray={this.updatedState.categories} dialogLable="Enter new name"/>

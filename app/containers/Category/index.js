@@ -61,10 +61,6 @@ export default class Category extends React.Component {
                     this.props.history.push('/'+this.props.id);}}}
                 nestedListStyle={{marginLeft: '40px', display: 'inline-block'}}
                 isKeyboardFocused={this.state.focused}
-                leftIcon={<Checkbox
-                    checked={this.props.isFinished}
-                    onCheck={this.props.markCategoryAsDoneFunction}
-                />}
                 nestedItems={[
                     <div>
                     <Switch>
@@ -86,6 +82,10 @@ export default class Category extends React.Component {
                         }/>
                         <Route component={()=>{return(
                         <div>
+                            <Checkbox
+                                checked={this.props.isFinished}
+                                onCheck={()=>{this.props.markCategoryAsDoneFunction(this.props.id, this.props.homeArray)}}
+                            />
                             <TextInputDialog
                                 buttonIcon={'home'}
                                 buttonLabel="Add category"
